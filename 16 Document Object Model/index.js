@@ -9,6 +9,10 @@ thirdList.style.color = "red";
 
 button.style.backgroundColor = "yellow";
 
-var hugeHeading = document.querySelector("h1").classList;
+var heading = document.querySelector("h1");
 
-hugeHeading.toggle("huge");
+heading.classList.toggle("huge");
+heading.innerHTML = "<em>Hello</em>";
+
+var link = document.querySelector("a");
+link.setAttribute("href", "https://www.twitter.com/");
