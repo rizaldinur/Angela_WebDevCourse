@@ -1,0 +1,15 @@
+.big-title {
+  font-size: 10rem;
+  color: yellow;
+  font-family: cursive;
+}
+
+.big-text {
+  font-size: 3rem;
+  color: red;
+  font-family: cursive;
+}
+
+.first-text {
+  color: darkgreen;
+}
