@@ -16,6 +16,7 @@
         gap: 3rem;
         grid-template-columns: 1fr 1fr 1.5fr;
         grid-template-rows: 1fr 1fr;
+        grid-auto-rows: 1fr;
       }
 
       .item {
@@ -34,6 +35,10 @@
         /* grid-column-start: 2;
         grid-column-end: 4; */
       }
+
+      .book2 {
+        grid-column: span 2;
+      }
     </style>
   </head>
 
@@ -42,6 +47,8 @@
       <div class="item cowboy">🤠</div>
       <div class="item astronaut">👨‍🚀</div>
       <div class="item book">📖</div>
+      <div class="item book2">📖</div>
+      <div class="item book3">📖</div>
     </div>
   </body>
 </html>
