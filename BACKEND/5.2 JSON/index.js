@@ -38,11 +38,11 @@ app.post("/recipe", (req, res) => {
   res.redirect("/");
 });
 
-// app.post("/back", (req, res) => {
-//   data = undefined;
-//   console.log(data);
-//   res.redirect("/");
-// });
+app.post("/back", (req, res) => {
+  data = undefined;
+  console.log(data);
+  res.redirect("/");
+});
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
