@@ -38,9 +38,10 @@ app.post("/recipe", (req, res) => {
   res.redirect("/");
 });
 
-app.post("/back", (req, res) => {
+app.get("/back", (req, res) => {
   data = undefined;
   console.log(data);
+  console.log(res.statusCode);
   res.redirect("/");
 });
 
