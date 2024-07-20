@@ -39,13 +39,14 @@ app.get("/filter", (req, res) => {
 //4. POST a new joke
 app.post("/jokes", (req, res) => {
   // console.log(req.body);
-  const newData = { id: jokes.length + 1 };
-  newData.text = req.body.text;
-  newData.type = req.body.type;
-
-  console.log(newData);
+  const newData = {
+    id: jokes.length + 1,
+    jokeText: req.body.text,
+    jokeType: req.body.type,
+  };
   jokes.push(newData);
-  res.json(jokes[jokes.length - 1]);
+  console.log(jokes[jokes.length - 1]);
+  res.json(newData);
 });
 
 //5. PUT a joke
