@@ -87,7 +87,7 @@ app.patch("/posts/:id", (req, res) => {
 });
 
 //CHALLENGE 5: DELETE a specific post by providing the post id.
-app.delete("/jokes/:id", (req, res) => {
+app.delete("/posts/:id", (req, res) => {
   const index = posts.findIndex((post) => {
     return post.id === Number(req.params.id);
   });
