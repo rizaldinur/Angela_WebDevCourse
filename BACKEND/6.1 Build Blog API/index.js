@@ -97,7 +97,7 @@ app.delete("/posts/:id", (req, res) => {
 
   if (index === -1) {
     res.status(404).json({
-      error: `Post with id: ${req.params.id} not found`,
+      message: `Post with id: ${req.params.id} not found`,
     });
   } else {
     posts.splice(index, 1);
