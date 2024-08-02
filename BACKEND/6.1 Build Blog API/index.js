@@ -73,6 +73,8 @@ app.patch("/posts/:id", (req, res) => {
     return post.id === Number(req.params.id);
   });
 
+  if (index === -1) return res.status(404).json({ message: "Post not found" });
+
   const existingPost = posts[index];
   const newData = {
     id: Number(req.params.id),
