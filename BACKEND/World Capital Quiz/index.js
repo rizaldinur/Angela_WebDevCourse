@@ -14,12 +14,13 @@ const db = new pg.Client({
 db.connect();
 
 // read data from db
-db.query("SELECT country, capital from capitals", (err, res) => {
+db.query("SELECT * from capitals", (err, res) => {
   if (err) {
     console.error("Error executing query", err.stack);
   } else {
     quiz = res.rows;
   }
+  db.end();
 });
 
 const app = express();
