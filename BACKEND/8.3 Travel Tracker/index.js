@@ -27,7 +27,7 @@ app.get("/", async (req, res) => {
     countries.push(element.country_code);
   });
   res.render("index.ejs", {
-    total: data.length,
+    total: data.rows.length,
     countries: countries,
   });
   console.log(countries);
@@ -41,6 +41,10 @@ app.post("/add", async (req, res) => {
   let found = data.rows.find(
     (value) => value.country_name.trim().toLowerCase() === country
   );
+
+  if (!found) {
+    return res.redirect("/");
+  }
 
   //cek if already visited
   let visited = await db.query("SELECT country_code from visited_countries");
