@@ -41,14 +41,14 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/add", async (req, res) => {
-  let country = req.body.country.trim();
+  let country = req.body.country.trim().toLowerCase();
 
   // console.log(data.rows.length);
   try {
     //check if country exist
     //get the country code
     let data = await db.query(
-      "SELECT country_code from countries WHERE country_name= $1",
+      "SELECT country_code from countries WHERE LOWER(country_name) = $1",
       [country]
     );
     if (data.rows.length === 0) throw error;
