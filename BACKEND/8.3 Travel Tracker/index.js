@@ -35,14 +35,30 @@ app.get("/", async (req, res) => {
 
 app.post("/add", async (req, res) => {
   let country = req.body.country.trim().toLowerCase();
+  country = country.charAt(0).toUpperCase() + country.slice(1);
 
   //get the country code
-  let data = await db.query("SELECT country_name, country_code from countries");
-  let found = data.rows.find(
-    (value) => value.country_name.trim().toLowerCase() === country
+  let data = await db.query(
+    "SELECT country_code from countries WHERE country_name= $1",
+    [country]
   );
+  console.log(data.rows[0]);
 
-  if (!found) {
+  if (data.rows.length !== 0) {
+    //cek if already visited
+    let visited = await db.query(
+      "SELECT country_code from visited_countries WHERE country_code = $1",
+      [data.rows[0].country_code]
+    );
+
+    
+    if (visited.rows.length === 0) {
+      await db.query(
+        "INSERT INTO visited_countries (country_code) values ($1)",
+        [data.rows[0].country_code]
+      );
+      return res.redirect("/");
+    }
     return res.redirect("/");
   }
 
