@@ -41,48 +41,35 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/add", async (req, res) => {
-  let country = req.body.country.trim().toLowerCase();
-  country = country.charAt(0).toUpperCase() + country.slice(1);
+  let country = req.body.country.trim();
 
-  //get the country code
-  let data = await db.query(
-    "SELECT country_code from countries WHERE country_name= $1",
-    [country]
-  );
-  console.log(data.rows[0]);
-
-  if (data.rows.length !== 0) {
-    //cek if already visited
-    let visited = await db.query(
-      "SELECT country_code from visited_countries WHERE country_code = $1",
-      [data.rows[0].country_code]
+  // console.log(data.rows.length);
+  try {
+    //check if country exist
+    //get the country code
+    let data = await db.query(
+      "SELECT country_code from countries WHERE country_name= $1",
+      [country]
     );
-
-    
-    if (visited.rows.length === 0) {
+    if (data.rows.length === 0) throw error;
+    try {
+      //check if already visited
       await db.query(
         "INSERT INTO visited_countries (country_code) values ($1)",
         [data.rows[0].country_code]
       );
-      return res.redirect("/");
+      delete render.error;
+      res.redirect("/");
+    } catch (error) {
+      //handle error if country already visited
+      render.error = "Country already visited, add another";
+      res.render("index.ejs", render);
     }
-    return res.redirect("/");
+  } catch (error) {
+    //handle error if country not exist in db
+    render.error = "Country doesnt exist, try again";
+    res.render("index.ejs", render);
   }
-
-  //cek if already visited
-  let visited = await db.query("SELECT country_code from visited_countries");
-  let filtered = [];
-  visited.rows.forEach((country) => {
-    filtered.push(country.country_code);
-  });
-  if (filtered.includes(found.country_code)) return res.redirect("/");
-
-  db.query("INSERT INTO visited_countries (country_code) values ($1)", [
-    found.country_code,
-  ]);
-
-  res.redirect("/");
-  console.log(filtered);
 });
 
 app.listen(port, () => {
