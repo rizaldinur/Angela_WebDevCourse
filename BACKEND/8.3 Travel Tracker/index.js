@@ -18,18 +18,25 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.get("/", async (req, res) => {
-  //fetch data from db
+const render = {};
+async function getVisited() {
   let data = await db.query("SELECT * from visited_countries");
 
   let countries = [];
   data.rows.forEach((element) => {
     countries.push(element.country_code);
   });
-  res.render("index.ejs", {
-    total: data.rows.length,
-    countries: countries,
-  });
+
+  return countries;
+}
+
+app.get("/", async (req, res) => {
+  //fetch data from db
+  let countries = await getVisited();
+
+  render.total = countries.length;
+  render.countries = countries;
+  res.render("index.ejs", render);
   console.log(countries);
 });
 
