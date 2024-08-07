@@ -8,8 +8,8 @@ const port = 3000;
 const db = new pg.Client({
   user: "postgres",
   host: "localhost",
-  database: "world",
-  password: "123456",
+  database: "postgres",
+  password: "surabaya12",
   port: 5432,
 });
 db.connect();
@@ -29,13 +29,24 @@ try {
   console.error("Error fetching data from database: ", err.stack);
 }
 
-async function checkVisisted() {
-  const result = await db.query("SELECT country_code FROM visited_countries");
+async function checkVisited(userID) {
+  try {
+    const result = await db.query(
+      "SELECT countries.country_code " +
+        "FROM visited_countries " +
+        "join users on users.id = visited_countries.user_id " +
+        "join countries on countries.id = visited_countries.country_id " +
+        "where users.id = $1",
+      [userID]
+    );
   let countries = [];
   result.rows.forEach((country) => {
     countries.push(country.country_code);
   });
   return countries;
+  } catch (error) {
+    console.error("Error fetching data from database: ", error.stack);
+  }
 }
 app.get("/", async (req, res) => {
   const countries = await checkVisisted();
