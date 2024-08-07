@@ -48,14 +48,17 @@ async function checkVisited(userID) {
     console.error("Error fetching data from database: ", error.stack);
   }
 }
+
+const render = {};
 app.get("/", async (req, res) => {
-  const countries = await checkVisisted();
-  res.render("index.ejs", {
-    countries: countries,
-    total: countries.length,
-    users: users,
-    color: "teal",
-  });
+  const countries = await checkVisited(currentUserId);
+
+  render.total = countries.length;
+  render.countries = countries;
+  render.users = users;
+  const found = users.find((user) => user.id === currentUserId);
+  render.color = found.color;
+  res.render("index.ejs", render);
 });
 app.post("/add", async (req, res) => {
   const input = req.body["country"];
