@@ -65,23 +65,30 @@ app.post("/add", async (req, res) => {
 
   try {
     const result = await db.query(
-      "SELECT country_code FROM countries WHERE LOWER(country_name) LIKE '%' || $1 || '%';",
+      "SELECT id FROM countries WHERE LOWER(country_name) LIKE '%' || $1 || '%';",
       [input.toLowerCase()]
     );
 
+    if (result.rows.length === 0) throw new Error("Invalid country name.");
     const data = result.rows[0];
-    const countryCode = data.country_code;
+    const countryCode = data.id;
     try {
       await db.query(
-        "INSERT INTO visited_countries (country_code) VALUES ($1)",
-        [countryCode]
+        "INSERT INTO visited_countries (user_id, country_id) VALUES ($1, $2)",
+        [currentUserId, countryCode]
       );
+      delete render.error;
       res.redirect("/");
     } catch (err) {
-      console.log(err);
+      err.message = "Country already visited, add another.";
+      render.error = err.message;
+      console.warn("Error: ", err.stack);
+      res.render("index.ejs", render);
     }
   } catch (err) {
-    console.log(err);
+    render.error = err.message;
+    console.error("Error: ", err.stack);
+    res.render("index.ejs", render);
   }
 });
 app.post("/user", async (req, res) => {});
