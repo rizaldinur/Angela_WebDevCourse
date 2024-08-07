@@ -91,7 +91,20 @@ app.post("/add", async (req, res) => {
     res.render("index.ejs", render);
   }
 });
-app.post("/user", async (req, res) => {});
+
+app.post("/user", async (req, res) => {
+  currentUserId = parseInt(req.body.user);
+  console.log(currentUserId);
+  const countries = await checkVisited(currentUserId);
+
+  const found = users.find((user) => user.id === currentUserId);
+  console.log(found.color);
+  render.total = countries.length;
+  render.countries = countries;
+  render.users = users;
+  render.color = found.color;
+  res.render("index.ejs", render);
+});
 
 app.post("/new", async (req, res) => {
   //Hint: The RETURNING keyword can return the data that was inserted.
