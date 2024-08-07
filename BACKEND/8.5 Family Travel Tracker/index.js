@@ -19,10 +19,15 @@ app.use(express.static("public"));
 
 let currentUserId = 1;
 
-let users = [
-  { id: 1, name: "Angela", color: "teal" },
-  { id: 2, name: "Jack", color: "powderblue" },
-];
+let users = [];
+
+try {
+  const res = await db.query("SELECT * FROM users");
+  users = res.rows;
+  console.log(users);
+} catch (error) {
+  console.error("Error fetching data from database: ", err.stack);
+}
 
 async function checkVisisted() {
   const result = await db.query("SELECT country_code FROM visited_countries");
