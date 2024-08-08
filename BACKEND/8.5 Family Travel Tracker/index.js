@@ -45,7 +45,9 @@ async function checkVisited(userID) {
     });
     return countries;
   } catch (error) {
-    console.error("Error fetching data from database: ", error.stack);
+    console.error("Error fetching data from database.\n", error.stack);
+    let countries = [];
+    return countries;
   }
 }
 
