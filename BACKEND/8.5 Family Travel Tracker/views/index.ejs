@@ -386,7 +386,7 @@
     </svg>
   </section>
     <h2 id="total-count" class="total-count">Total Countries: <%=total%></h2>
-  <script>
+    <script>
       const country_codes = "<%= countries %>".split(",");
       console.log(country_codes);
       if (country_codes[0] !== "") {
@@ -395,10 +395,10 @@
           const element = document.getElementById(code);
           if (element) {
             element.style.fill = "<%= color %>";
-            console.log(element.id);
           } else {
             count++;
-            console.warn(`Element with ID: ${code} not found`);
+            console.log(element);
+            console.warn(`Element with id: ${code} not found`);
             document.getElementById(
               "total-count"
             ).innerHTML = `Total Countries: <%=total%>, ${count} countrie(s) uncolored (see log).`;
@@ -407,7 +407,6 @@
       } else {
         console.warn("No country data available.");
       }
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
