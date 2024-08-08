@@ -34,13 +34,14 @@ async function getUserData() {
 async function checkVisited(userID) {
   try {
     const result = await db.query(
-      "SELECT countries.country_code " +
+      "SELECT countries.country_code, countries.country_name " +
         "FROM visited_countries " +
         "join users on users.id = visited_countries.user_id " +
         "join countries on countries.id = visited_countries.country_id " +
         "where users.id = $1",
       [userID]
     );
+    console.log(result.rows);
     let countries = [];
     result.rows.forEach((country) => {
       countries.push(country.country_code);
