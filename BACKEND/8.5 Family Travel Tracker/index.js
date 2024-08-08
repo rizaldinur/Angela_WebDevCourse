@@ -106,12 +106,27 @@ app.post("/add", async (req, res) => {
 });
 
 app.post("/user", async (req, res) => {
+  if (req.body.add) return res.render("new.ejs");
   currentUserId = parseInt(req.body.user);
   res.redirect("/");
 });
 
 app.post("/new", async (req, res) => {
   //Hint: The RETURNING keyword can return the data that was inserted.
+  const newUser = [req.body.name, req.body.color];
+  console.log(newUser);
+
+  try {
+    const result = await db.query(
+      "INSERT INTO users (name, color) VALUES ($1, $2) RETURNING id",
+      newUser
+    );
+    currentUserId = result.rows[0].id;
+    res.redirect("/");
+  } catch (err) {
+    console.error(err.stack);
+    res.render("new.ejs");
+  }
   //https://www.postgresql.org/docs/current/dml-returning.html
 });
 
