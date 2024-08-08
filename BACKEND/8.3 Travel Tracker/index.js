@@ -48,7 +48,7 @@ app.post("/add", async (req, res) => {
     //check if country exist
     //get the country code
     let data = await db.query(
-      "SELECT country_code from countries WHERE LOWER(country_name) = $1",
+      "SELECT country_code from countries WHERE LOWER(country_name) LIKE '%' || $1 || '%';",
       [country]
     );
     if (data.rows.length === 0) throw error;
