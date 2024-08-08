@@ -56,16 +56,22 @@ async function checkVisited(userID) {
 
 const render = {};
 app.get("/", async (req, res) => {
-  const countries = await checkVisited(currentUserId);
-  console.log(currentUserId);
-  const found = users.find((user) => user.id === currentUserId);
-  console.log(found.color);
+  try {
+    await getUserData();
+    const found = users.find((user) => user.id === currentUserId);
+    console.log(currentUserId);
+    console.log(found.color);
+    const countries = await checkVisited(currentUserId);
 
-  render.total = countries.length;
-  render.countries = countries;
-  render.users = users;
-  render.color = found.color;
-  res.render("index.ejs", render);
+    render.total = countries.length;
+    render.countries = countries;
+    render.users = users;
+    render.color = found.color;
+    res.render("index.ejs", render);
+  } catch (error) {
+    console.error("Something went wrong.\n", error.stack);
+    res.status(500).send("Something went horribly wrong.");
+  }
 });
 app.post("/add", async (req, res) => {
   const input = req.body["country"];
