@@ -113,10 +113,9 @@ app.post("/user", async (req, res) => {
 
 app.post("/new", async (req, res) => {
   //Hint: The RETURNING keyword can return the data that was inserted.
-  const newUser = [req.body.name, req.body.color];
-  console.log(newUser);
-
   try {
+    const newUser = [req.body.name, req.body.color];
+    console.log(newUser);
     const result = await db.query(
       "INSERT INTO users (name, color) VALUES ($1, $2) RETURNING id",
       newUser
