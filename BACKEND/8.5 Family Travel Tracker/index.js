@@ -39,11 +39,11 @@ async function checkVisited(userID) {
         "where users.id = $1",
       [userID]
     );
-  let countries = [];
-  result.rows.forEach((country) => {
-    countries.push(country.country_code);
-  });
-  return countries;
+    let countries = [];
+    result.rows.forEach((country) => {
+      countries.push(country.country_code);
+    });
+    return countries;
   } catch (error) {
     console.error("Error fetching data from database: ", error.stack);
   }
@@ -84,7 +84,7 @@ app.post("/add", async (req, res) => {
     } catch (err) {
       err.message = "Country already visited, add another.";
       render.error = err.message;
-      console.warn("Error: ", err.stack);
+      console.warn(err.stack);
       res.render("index.ejs", render);
     }
   } catch (err) {
