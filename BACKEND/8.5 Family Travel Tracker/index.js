@@ -21,12 +21,14 @@ let currentUserId = 1;
 
 let users = [];
 
-try {
-  const res = await db.query("SELECT * FROM users");
-  users = res.rows;
-  console.log(users);
-} catch (error) {
-  console.error("Error fetching data from database: ", err.stack);
+async function getUserData() {
+  try {
+    const res = await db.query("SELECT * FROM users");
+    users = res.rows;
+    console.log(users);
+  } catch (error) {
+    console.error("Error fetching user data from database: ", err.stack);
+  }
 }
 
 async function checkVisited(userID) {
