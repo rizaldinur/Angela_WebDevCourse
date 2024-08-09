@@ -39,10 +39,18 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.post("/add", (req, res) => {
-  const item = req.body.newItem;
-  items.push({ title: item });
-  res.redirect("/");
+app.post("/add", async (req, res) => {
+  try {
+    const item = req.body.newItem;
+    if (item === "") {
+      throw new Error("Title is empty.");
+    }
+    await db.query("INSERT INTO items (title) VALUES ($1)", [item]);
+    res.redirect("/");
+  } catch (err) {
+    console.warn(err.stack);
+    res.redirect("/");
+  }
 });
 
 app.post("/edit", (req, res) => {});
