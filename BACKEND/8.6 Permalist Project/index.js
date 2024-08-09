@@ -17,12 +17,22 @@ db.connect();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-let items = [
-  { id: 1, title: "Buy milk" },
-  { id: 2, title: "Finish homework" },
-];
+let items = [];
 
-app.get("/", (req, res) => {
+async function getItemsData() {
+  try {
+    const res = await db.query("SELECT * FROM items ORDER BY id ASC");
+    console.log(res.rows);
+    return res.rows;
+  } catch (error) {
+    console.error("Error fetching items data from database.\n", error.stack);
+    return [];
+  }
+}
+
+app.get("/", async (req, res) => {
+  items = await getItemsData();
+
   res.render("index.ejs", {
     listTitle: "Today",
     listItems: items,
