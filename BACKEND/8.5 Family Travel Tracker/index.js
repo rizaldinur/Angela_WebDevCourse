@@ -27,7 +27,7 @@ async function getUserData() {
     users = res.rows;
     console.log(users);
   } catch (error) {
-    console.error("Error fetching user data from database: ", err.stack);
+    console.error("Error fetching user data from database: ", error.stack);
   }
 }
 
